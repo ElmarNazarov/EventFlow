@@ -15,10 +15,10 @@ import { cn } from "@/shared/utils/cn";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/orders", label: "Orders", icon: Package, disabled: true },
+  { href: "/orders", label: "Orders", icon: Package },
   { href: "/workflows", label: "Workflows", icon: GitBranch, disabled: true },
   { href: "/events", label: "Events", icon: Radio, disabled: true },
-  { href: "/inventory", label: "Inventory", icon: Boxes, disabled: true },
+  { href: "/inventory", label: "Inventory", icon: Boxes },
   { href: "/notifications", label: "Notifications", icon: Bell, disabled: true },
   { href: "/settings", label: "Settings", icon: Settings },
 ];

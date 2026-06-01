@@ -49,10 +49,14 @@ export function useAuth() {
     },
   });
 
+  const canMutate =
+    userQuery.data?.role === "ADMIN" || userQuery.data?.role === "OPS_MANAGER";
+
   return {
     user: userQuery.data,
     isLoading: userQuery.isLoading,
     isAuthenticated: !!userQuery.data,
+    canMutate,
     login: loginMutation.mutate,
     loginError: loginMutation.error,
     isLoggingIn: loginMutation.isPending,

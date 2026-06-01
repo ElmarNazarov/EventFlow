@@ -3,7 +3,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_db, require_mutation_role
-from app.api.v1 import auth, users
+from app.api.v1 import auth, inventory, orders, users
 from app.core.config import get_settings
 from app.core.redis import ping_redis
 from app.messaging.kafka import kafka_client
@@ -15,6 +15,8 @@ api_router = APIRouter()
 
 api_router.include_router(auth.router)
 api_router.include_router(users.router)
+api_router.include_router(orders.router)
+api_router.include_router(inventory.router)
 
 
 @api_router.get("/health", tags=["health"])

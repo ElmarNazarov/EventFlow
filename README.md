@@ -6,7 +6,11 @@ Event-driven order and workflow processing platform — a senior-level full-stac
 
 EventFlow is an internal operations platform for managing customer orders, inventory reservations, payment processing, shipping workflows, event history, and background job orchestration. It is **not** an ecommerce storefront; it models the backend systems behind order fulfillment.
 
-This repository is built incrementally across milestones. **Milestone 1** provides the foundation: Dockerized infrastructure, API health checks, database connectivity, and a minimal frontend shell.
+This repository is built incrementally across milestones.
+
+- **Milestone 1** — Docker infrastructure, health checks, minimal frontend
+- **Milestone 2** — JWT auth, roles, login, app shell
+- **Milestone 3** — Orders and inventory CRUD with paginated APIs and dashboard UI
 
 ## Features (planned across milestones)
 
