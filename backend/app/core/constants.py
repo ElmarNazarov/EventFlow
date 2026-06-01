@@ -1,4 +1,5 @@
 import enum
+from decimal import Decimal
 
 
 class UserRole(str, enum.Enum):
@@ -37,3 +38,34 @@ class ReservationStatus(str, enum.Enum):
     RESERVED = "RESERVED"
     FAILED = "FAILED"
     RELEASED = "RELEASED"
+
+
+class PaymentStatus(str, enum.Enum):
+    PENDING = "PENDING"
+    CONFIRMED = "CONFIRMED"
+    FAILED = "FAILED"
+    REFUNDED = "REFUNDED"
+
+
+class ShipmentStatus(str, enum.Enum):
+    PENDING = "PENDING"
+    CREATED = "CREATED"
+    SHIPPED = "SHIPPED"
+    FAILED = "FAILED"
+
+
+# RabbitMQ command queues
+QUEUE_RESERVE_INVENTORY = "reserve_inventory"
+QUEUE_PROCESS_PAYMENT = "process_payment"
+QUEUE_CREATE_SHIPPING = "create_shipping"
+QUEUE_SEND_NOTIFICATION = "send_notification"
+
+# Demo payment failure threshold (deterministic for tests)
+PAYMENT_FAILURE_THRESHOLD = Decimal("5000")
+
+
+class CommandType(str, enum.Enum):
+    RESERVE_INVENTORY = "reserve_inventory"
+    PROCESS_PAYMENT = "process_payment"
+    CREATE_SHIPPING = "create_shipping"
+    SEND_NOTIFICATION = "send_notification"

@@ -5,6 +5,10 @@ import signal
 from app.core.config import get_settings
 from app.core.logging import setup_logging
 from app.messaging.rabbitmq import rabbitmq_client
+from app.workers.inventory_worker import run_inventory_consumer
+from app.workers.notification_worker import run_notification_consumer
+from app.workers.payment_worker import run_payment_consumer
+from app.workers.shipping_worker import run_shipping_consumer
 
 logger = logging.getLogger(__name__)
 
@@ -31,26 +35,30 @@ async def run_worker() -> None:
             connected = True
             break
         except Exception as exc:
-            logger.warning(
-                "RabbitMQ connect attempt %s/30 failed: %s",
-                attempt,
-                exc,
-            )
+            logger.warning("RabbitMQ connect attempt %s/30 failed: %s", attempt, exc)
             await asyncio.sleep(2)
 
     if not connected:
         logger.error("Failed to connect to RabbitMQ after retries")
         return
 
-    logger.info("EventFlow worker started — waiting for commands (Milestone 4)")
+    logger.info("EventFlow workers started — consuming command queues")
 
-    try:
-        while not stop_event.is_set():
-            await asyncio.sleep(5)
-            logger.debug("Worker heartbeat")
-    finally:
-        await rabbitmq_client.close()
-        logger.info("EventFlow worker stopped")
+    consumer_tasks = [
+        asyncio.create_task(run_inventory_consumer()),
+        asyncio.create_task(run_payment_consumer()),
+        asyncio.create_task(run_shipping_consumer()),
+        asyncio.create_task(run_notification_consumer()),
+    ]
+
+    await stop_event.wait()
+
+    for task in consumer_tasks:
+        task.cancel()
+    await asyncio.gather(*consumer_tasks, return_exceptions=True)
+
+    await rabbitmq_client.close()
+    logger.info("EventFlow worker stopped")
 
 
 def main() -> None:

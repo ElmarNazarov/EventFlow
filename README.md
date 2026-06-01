@@ -11,6 +11,7 @@ This repository is built incrementally across milestones.
 - **Milestone 1** — Docker infrastructure, health checks, minimal frontend
 - **Milestone 2** — JWT auth, roles, login, app shell
 - **Milestone 3** — Orders and inventory CRUD with paginated APIs and dashboard UI
+- **Milestone 4** — RabbitMQ command pipeline (inventory → payment → shipping workers)
 
 ## Features (planned across milestones)
 

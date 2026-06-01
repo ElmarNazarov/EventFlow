@@ -8,12 +8,18 @@ from app.core.config import get_settings
 from app.core.exceptions import register_exception_handlers
 from app.core.logging import setup_logging
 from app.core.redis import close_redis
+from app.messaging.rabbitmq import rabbitmq_client
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     setup_logging()
+    try:
+        await rabbitmq_client.connect()
+    except Exception:
+        pass  # health check will report rabbitmq status
     yield
+    await rabbitmq_client.close()
     await close_redis()
 
 

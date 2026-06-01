@@ -88,6 +88,12 @@ class OrderRepository:
         await self.db.refresh(order, attribute_names=["items"])
         return order
 
+    async def update_status(self, order: Order, status: OrderStatus) -> Order:
+        order.status = status
+        await self.db.flush()
+        await self.db.refresh(order)
+        return order
+
     async def count_today(self) -> int:
         today = datetime.utcnow().date()
         result = await self.db.execute(

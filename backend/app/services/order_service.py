@@ -9,6 +9,7 @@ from app.core.exceptions import AppException
 from app.core.pagination import PaginatedResponse, PaginationParams
 from app.models.order import Order, OrderItem
 from app.models.user import User
+from app.messaging.producers import command_publisher
 from app.repositories.inventory import InventoryRepository
 from app.repositories.orders import OrderRepository
 from app.schemas.order import OrderCreate, OrderListItem, OrderRead
@@ -67,7 +68,10 @@ class OrderService:
         )
 
         created = await self.orders.create(order, order_items)
+        await self.orders.update_status(created, OrderStatus.INVENTORY_PENDING)
         await self.db.commit()
+
+        await command_publisher.publish_reserve_inventory(created.id)
 
         refreshed = await self.orders.get_by_id(created.id)
         if refreshed is None:
