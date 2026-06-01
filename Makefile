@@ -27,7 +27,7 @@ makemigration:
 	$(COMPOSE) exec api alembic revision --autogenerate -m "$(msg)"
 
 seed:
-	@echo "Seed data will be available in Milestone 9"
+	$(COMPOSE) exec api python -m app.seed.seed_demo_data
 
 test:
 	$(COMPOSE) exec api pytest -v

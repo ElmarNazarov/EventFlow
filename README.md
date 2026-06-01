@@ -43,17 +43,19 @@ This repository is built incrementally across milestones. **Milestone 1** provid
    make up
    ```
 
-3. Run database migrations:
+3. Run database migrations and seed demo users:
 
    ```bash
    make migrate
+   make seed
    ```
 
 4. Open the applications:
 
    - API docs: http://localhost:8000/docs
    - Health check: http://localhost:8000/api/v1/health
-   - Frontend: http://localhost:3000
+   - Frontend: http://localhost:3000 (or your `FRONTEND_HOST_PORT`)
+   - Login: http://localhost:3000/login
    - RabbitMQ Management: http://localhost:15672 (guest / guest)
    - Kafka UI: http://localhost:8080
 
@@ -86,7 +88,14 @@ See [`.env.example`](.env.example) for all configuration options. Key variables:
 
 ## Demo Users
 
-Demo users will be seeded in **Milestone 2** (authentication).
+After `make migrate` and `make seed`, use these accounts:
+
+| Email | Password | Role |
+|-------|----------|------|
+| admin@eventflow.local | password123 | ADMIN |
+| ops@eventflow.local | password123 | OPS_MANAGER |
+| support@eventflow.local | password123 | SUPPORT |
+| viewer@eventflow.local | password123 | VIEWER |
 
 ## Running Tests
 
